@@ -1,0 +1,31 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="#222222"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="Emergency SOS"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/countdownText"
+        android:text="5"
+        android:textColor="#FF0000"
+        android:textSize="60sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:text="Cancel"
+        android:layout_marginTop="30dp"
+        android:layout_width="200dp"
+        android:layout_height="60dp"/>
+
+</LinearLayout>
