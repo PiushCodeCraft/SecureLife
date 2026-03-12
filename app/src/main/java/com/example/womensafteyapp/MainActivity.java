@@ -96,35 +96,31 @@ public class MainActivity extends AppCompatActivity {
         sosBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    isHolding = true;
-                    // Start sound immediately on touch
+                    // Single click — start alarm + send SOS immediately
                     if (alarmSound != null) {
+                        alarmSound.seekTo(0);
                         alarmSound.start();
                     }
-                    sosHint.setText("HOLD... 3");
-                    holdHandler.postDelayed(() -> sosHint.setText("HOLD... 2"), 1000);
-                    holdHandler.postDelayed(() -> sosHint.setText("HOLD... 1"), 2000);
-                    holdHandler.postDelayed(sosRunnable, 3000);
+                    sendSOS();
+                    sosHint.setText("HOLD 3 SEC TO STOP ALARM");
+                    sosHint.setTextColor(0xFFFF2847);
+
+                    // Hold 3 seconds — stop the alarm
+                    holdHandler.postDelayed(() -> {
+                        if (alarmSound != null && alarmSound.isPlaying()) {
+                            alarmSound.pause();
+                            alarmSound.seekTo(0);
+                        }
+                        sosHint.setText("HOLD 3 SECONDS TO ACTIVATE");
+                        sosHint.setTextColor(0xFF2E3A52);
+                        Toast.makeText(this, "Alarm stopped", Toast.LENGTH_SHORT).show();
+                    }, 3000);
                     break;
 
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    if (isHolding) {
-                        isHolding = false;
-                        holdHandler.removeCallbacks(sosRunnable);
-                        holdHandler.removeCallbacksAndMessages(null);
-                        
-                        // If they release before 3 seconds and SOS wasn't sent, stop the sound
-                        if (!sosBtn.getText().toString().equals("✓")) {
-                            if (alarmSound != null && alarmSound.isPlaying()) {
-                                alarmSound.pause();
-                                alarmSound.seekTo(0);
-                            }
-                        }
-                        
-                        sosHint.setText("HOLD 3 SECONDS TO ACTIVATE");
-                        sosHint.setTextColor(0xFF2E3A52);
-                    }
+                    // Released before 3 sec — alarm keeps playing, just cancel the stop timer
+                    holdHandler.removeCallbacksAndMessages(null);
                     break;
             }
             return true;

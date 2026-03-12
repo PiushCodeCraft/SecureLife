@@ -1,27 +1,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="24dp"
+    android:padding="30dp"
     android:gravity="center"
+    android:background="#F6E8F9"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:text="Create Account"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="#6A1B9A"
+        android:layout_marginBottom="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/name"
+        android:hint="Full Name"
+        android:padding="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
 
     <EditText
         android:id="@+id/email"
         android:hint="Email"
+        android:padding="15dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"/>
 
     <EditText
         android:id="@+id/password"
         android:hint="Password"
         android:inputType="textPassword"
+        android:padding="15dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"/>
 
     <Button
         android:id="@+id/signupBtn"
-        android:text="Signup"
+        android:text="Signup with Email"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#8E24AA"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="50dp"/>
+
+    <Button
+        android:id="@+id/googleSignupBtn"
+        android:text="Signup with Google"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#000000"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
 
 </LinearLayout>

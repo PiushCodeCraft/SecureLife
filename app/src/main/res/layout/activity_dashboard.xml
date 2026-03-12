@@ -27,7 +27,6 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="24dp"
                 android:paddingEnd="24dp"
-                android:paddingTop="48dp"
                 android:paddingBottom="8dp">
 
                 <LinearLayout
@@ -38,39 +37,39 @@
                     android:layout_centerVertical="true">
 
                     <!-- PROTECTED chip -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="28dp"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:paddingStart="8dp"
-                        android:paddingEnd="12dp"
-                        android:background="@drawable/chip_protected_bg"
-                        android:layout_marginBottom="10dp">
+<!--                    <LinearLayout-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="28dp"-->
+<!--                        android:orientation="horizontal"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingStart="8dp"-->
+<!--                        android:paddingEnd="12dp"-->
+<!--                        android:background="@drawable/chip_protected_bg"-->
+<!--                        android:layout_marginBottom="10dp">-->
 
-                        <View
-                            android:layout_width="7dp"
-                            android:layout_height="7dp"
-                            android:background="@drawable/dot_green_pulse"
-                            android:layout_marginEnd="6dp" />
+<!--                        <View-->
+<!--                            android:layout_width="7dp"-->
+<!--                            android:layout_height="7dp"-->
+<!--                            android:background="@drawable/dot_green_pulse"-->
+<!--                            android:layout_marginEnd="6dp" />-->
 
-                        <TextView
-                            android:text="PROTECTED"
-                            android:textSize="9sp"
-                            android:textColor="#00D68F"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
+<!--                        <TextView-->
+<!--                            android:text="PROTECTED"-->
+<!--                            android:textSize="9sp"-->
+<!--                            android:textColor="#00D68F"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content" />-->
 
-                    </LinearLayout>
+<!--                    </LinearLayout>-->
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:text="Emergency help needed?"
-                        android:textSize="12sp"
-                        android:textColor="#8492B4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/title"-->
+<!--                        android:text="Emergency help needed?"-->
+<!--                        android:textSize="12sp"-->
+<!--                        android:textColor="#8492B4"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="2dp" />-->
 
                     <TextView
                         android:id="@+id/userName"
