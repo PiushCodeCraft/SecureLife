@@ -20,33 +20,31 @@ import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
 
-    // ── Buttons from NEW dashboard layout ──
+    // ── UI ──
     Button sosBtn;
     LinearLayout locationBtn, policeBtn, contactBtn, hospitalBtn, petrolBtn;
-    TextView sosHint;
+    TextView sosHint, btnLogout, userName;
 
+    // ── Media & Location ──
     MediaPlayer alarmSound;
     FusedLocationProviderClient fusedLocationClient;
 
     String emergencyNumber = "9876543210";
 
-    // For SOS hold-to-activate
+    // ── SOS hold handler ──
     Handler holdHandler = new Handler();
-    boolean isHolding = false;
-    Runnable sosRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-        // ── Load NEW dashboard layout ──
         setContentView(R.layout.activity_dashboard);
 
-        // ── Connect buttons to new layout IDs ──
+        // ── Connect all views ──
         sosBtn      = findViewById(R.id.sosBtn);
         locationBtn = findViewById(R.id.locationBtn);
         policeBtn   = findViewById(R.id.policeBtn);
@@ -54,6 +52,20 @@ public class MainActivity extends AppCompatActivity {
         hospitalBtn = findViewById(R.id.hospitalBtn);
         petrolBtn   = findViewById(R.id.petrolBtn);
         sosHint     = findViewById(R.id.sosHint);
+        btnLogout   = findViewById(R.id.btnLogout);
+        userName    = findViewById(R.id.userName);
+
+        // ── Show logged-in user name from Firebase ──
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null) {
+            String email = currentUser.getEmail();
+            if (email != null) {
+                String namePart = email.split("@")[0];
+                String displayName = namePart.substring(0, 1).toUpperCase()
+                        + namePart.substring(1);
+                userName.setText("Welcome, " + displayName);
+            }
+        }
 
         // ── Location provider ──
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -75,28 +87,11 @@ public class MainActivity extends AppCompatActivity {
         Animation pulse = AnimationUtils.loadAnimation(this, R.anim.pulse);
         sosBtn.startAnimation(pulse);
 
-        // ── SOS Button — hold 3 seconds to activate ──
-        sosRunnable = () -> {
-            sosBtn.clearAnimation();
-            sosBtn.setText("✓");
-            sosHint.setText("Help is on the way!");
-            sosHint.setTextColor(0xFFFF2847);
-            sendSOS();
-
-            // Reset button after 3 seconds
-            new Handler().postDelayed(() -> {
-                sosBtn.setText("SOS");
-                sosHint.setText("HOLD 3 SECONDS TO ACTIVATE");
-                sosHint.setTextColor(0xFF2E3A52);
-                Animation p = AnimationUtils.loadAnimation(this, R.anim.pulse);
-                sosBtn.startAnimation(p);
-            }, 3000);
-        };
-
+        // ── SOS — tap to activate, hold 3 sec to stop ──
         sosBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
+
                 case MotionEvent.ACTION_DOWN:
-                    // Single click — start alarm + send SOS immediately
                     if (alarmSound != null) {
                         alarmSound.seekTo(0);
                         alarmSound.start();
@@ -105,13 +100,12 @@ public class MainActivity extends AppCompatActivity {
                     sosHint.setText("HOLD 3 SEC TO STOP ALARM");
                     sosHint.setTextColor(0xFFFF2847);
 
-                    // Hold 3 seconds — stop the alarm
                     holdHandler.postDelayed(() -> {
                         if (alarmSound != null && alarmSound.isPlaying()) {
                             alarmSound.pause();
                             alarmSound.seekTo(0);
                         }
-                        sosHint.setText("HOLD 3 SECONDS TO ACTIVATE");
+                        sosHint.setText("TAP TO ACTIVATE · HOLD TO STOP");
                         sosHint.setTextColor(0xFF2E3A52);
                         Toast.makeText(this, "Alarm stopped", Toast.LENGTH_SHORT).show();
                     }, 3000);
@@ -119,41 +113,39 @@ public class MainActivity extends AppCompatActivity {
 
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
-                    // Released before 3 sec — alarm keeps playing, just cancel the stop timer
                     holdHandler.removeCallbacksAndMessages(null);
                     break;
             }
             return true;
         });
 
-        // ── Share Location ──
-        locationBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MapActivity.class);
-            startActivity(intent);
-        });
+        // ── Share Location → MapActivity ──
+        locationBtn.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, MapActivity.class))
+        );
 
-        // ── Police Call ──
+        // ── Police Call → 100 ──
         policeBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:100"));
-            startActivity(intent);
+            Intent i = new Intent(Intent.ACTION_DIAL);
+            i.setData(Uri.parse("tel:100"));
+            startActivity(i);
         });
 
-        // ── Emergency Contact ──
+        // ── Emergency Contact → 112 ──
         contactBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:112"));
-            startActivity(intent);
+            Intent i = new Intent(Intent.ACTION_DIAL);
+            i.setData(Uri.parse("tel:112"));
+            startActivity(i);
         });
 
-        // ── Hospital ──
+        // ── Hospital → 108 ──
         hospitalBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_DIAL);
-            intent.setData(Uri.parse("tel:108"));
-            startActivity(intent);
+            Intent i = new Intent(Intent.ACTION_DIAL);
+            i.setData(Uri.parse("tel:108"));
+            startActivity(i);
         });
 
-        // ── Petrol (Panic Alarm toggle) ──
+        // ── Petrol → panic alarm toggle ──
         petrolBtn.setOnClickListener(v -> {
             if (alarmSound != null) {
                 if (alarmSound.isPlaying()) {
@@ -166,23 +158,33 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // ── Logout → sign out + go to LoginActivity ──
+        btnLogout.setOnClickListener(v -> {
+            if (alarmSound != null && alarmSound.isPlaying()) {
+                alarmSound.pause();
+                alarmSound.seekTo(0);
+            }
+            FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            finish();
+        });
     }
 
-    // ── Send SOS message with location ──
+    // ── Send SOS SMS with live location ──
     private void sendSOS() {
-        // Sound is already started in ACTION_DOWN
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
                 String message =
                         "🚨 SOS! I need help.\nMy Location:\nhttps://maps.google.com/?q="
                                 + location.getLatitude()
                                 + "," + location.getLongitude();
-
                 try {
                     SmsManager smsManager = SmsManager.getDefault();
                     smsManager.sendTextMessage(emergencyNumber, null, message, null, null);
                     Toast.makeText(this, "SOS Sent!", Toast.LENGTH_LONG).show();
-
                 } catch (Exception e) {
                     Toast.makeText(this, "SMS Failed", Toast.LENGTH_SHORT).show();
                 }

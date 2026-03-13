@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Women Safety App</string>
+    <string name="app_name">SecureLife</string>
 
     <!-- Google Login Client ID -->
     <string name="default_web_client_id">

@@ -6,399 +6,390 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#06080F"
-    tools:context=".DashboardActivity">
+    tools:context=".MainActivity">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true"
-        android:overScrollMode="never">
+        android:orientation="vertical">
 
+        <!-- ══════════════════════════════
+             TOP TOOLBAR
+             ══════════════════════════════ -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="58dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="@drawable/toolbar_bg">
 
-            <!-- ══════════════════════════════
-                 HEADER
-                 ══════════════════════════════ -->
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="24dp"
-                android:paddingEnd="24dp"
-                android:paddingBottom="8dp">
+            <!-- Logo -->
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:src="@drawable/ic_securelife_logo"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="SecureLife Logo" />
 
-                <LinearLayout
-                    android:id="@+id/headerLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_centerVertical="true">
-
-                    <!-- PROTECTED chip -->
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="28dp"-->
-<!--                        android:orientation="horizontal"-->
-<!--                        android:gravity="center_vertical"-->
-<!--                        android:paddingStart="8dp"-->
-<!--                        android:paddingEnd="12dp"-->
-<!--                        android:background="@drawable/chip_protected_bg"-->
-<!--                        android:layout_marginBottom="10dp">-->
-
-<!--                        <View-->
-<!--                            android:layout_width="7dp"-->
-<!--                            android:layout_height="7dp"-->
-<!--                            android:background="@drawable/dot_green_pulse"-->
-<!--                            android:layout_marginEnd="6dp" />-->
-
-<!--                        <TextView-->
-<!--                            android:text="PROTECTED"-->
-<!--                            android:textSize="9sp"-->
-<!--                            android:textColor="#00D68F"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content" />-->
-
-<!--                    </LinearLayout>-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/title"-->
-<!--                        android:text="Emergency help needed?"-->
-<!--                        android:textSize="12sp"-->
-<!--                        android:textColor="#8492B4"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="2dp" />-->
-
-                    <TextView
-                        android:id="@+id/userName"
-                        android:text="Welcome, User"
-                        android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:textColor="#F0F4FF"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <!-- Avatar -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true">
-
-                    <TextView
-                        android:id="@+id/ivAvatar"
-                        android:layout_width="46dp"
-                        android:layout_height="46dp"
-                        android:text="U"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="#F0F4FF"
-                        android:gravity="center"
-                        android:background="@drawable/avatar_bg"
-                        android:layout_marginBottom="4dp" />
-
-                    <TextView
-                        android:text="PROFILE"
-                        android:textSize="8sp"
-                        android:textColor="#2E3A52"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <!-- ══════════════════════════════
-                 SOS SECTION
-                 ══════════════════════════════ -->
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="260dp">
-
-                <View
-                    android:layout_width="220dp"
-                    android:layout_height="220dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ring_outer"
-                    android:alpha="0.5" />
-
-                <View
-                    android:layout_width="196dp"
-                    android:layout_height="196dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/ring_middle"
-                    android:alpha="0.4" />
-
-                <Button
-                    android:id="@+id/sosBtn"
-                    android:text="SOS"
-                    android:textSize="40sp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:background="@drawable/sos_btn_bg"
-                    android:layout_gravity="center"
-                    android:stateListAnimator="@null"
-                    app:backgroundTint="@null"
-                    android:layout_width="165dp"
-                    android:layout_height="165dp" />
-
-            </FrameLayout>
-
+            <!-- App Name -->
             <TextView
-                android:id="@+id/sosHint"
-                android:text="HOLD 3 SECONDS TO ACTIVATE"
-                android:textSize="9sp"
-                android:textColor="#2E3A52"
-                android:gravity="center"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp" />
+                android:layout_weight="1"
+                android:text="SecureLife"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#F0F4FF"
+                android:letterSpacing="-0.01" />
 
-            <!-- ══════════════════════════════
-                 BOTTOM PANEL
-                 ══════════════════════════════ -->
+            <!-- Logout Button -->
+            <TextView
+                android:id="@+id/btnLogout"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:text="Logout"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#FF2847"
+                android:gravity="center"
+                android:paddingStart="14dp"
+                android:paddingEnd="14dp"
+                android:background="@drawable/btn_logout_bg"
+                android:clickable="true"
+                android:focusable="true" />
+
+        </LinearLayout>
+
+        <!-- ══════════════════════════════
+             SCROLLABLE CONTENT
+             ══════════════════════════════ -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:overScrollMode="never">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@drawable/panel_bottom_bg"
-                android:paddingStart="20dp"
-                android:paddingEnd="20dp"
-                android:paddingTop="20dp"
-                android:paddingBottom="32dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <!-- Header row -->
+                <!-- ══════════════════════════════
+                     HEADER
+                     ══════════════════════════════ -->
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp">
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:paddingTop="1dp"
+                    android:paddingBottom="8dp">
 
-                    <TextView
-                        android:text="EMERGENCY SERVICES"
-                        android:textSize="9sp"
-                        android:textColor="#2E3A52"
-                        android:layout_centerVertical="true"
+                    <LinearLayout
+                        android:id="@+id/headerLeft"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_centerVertical="true">
 
-                    <TextView
-                        android:text="5 ACTIVE"
-                        android:textSize="9sp"
-                        android:textColor="#FF2847"
-                        android:paddingStart="10dp"
-                        android:paddingEnd="10dp"
-                        android:paddingTop="3dp"
-                        android:paddingBottom="3dp"
-                        android:background="@drawable/badge_red_bg"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        <TextView
+                            android:id="@+id/userName"
+                            android:text="Welcome, User"
+                            android:textSize="24sp"
+                            android:textStyle="bold"
+                            android:textColor="#F0F4FF"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
 
                 </RelativeLayout>
 
-                <!-- Row 1: Emergency | Police | Hospital -->
-                <LinearLayout
+                <!-- ══════════════════════════════
+                     SOS SECTION
+                     ══════════════════════════════ -->
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp">
+                    android:layout_height="260dp">
 
-                    <!-- Emergency -->
-                    <LinearLayout
-                        android:id="@+id/contactBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="5dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="14dp"
-                        android:background="@drawable/card_emergency"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@android:drawable/ic_menu_call"
-                            android:background="@drawable/icon_bg_red"
-                            android:padding="12dp"
-                            android:tint="#FF2847"
-                            android:layout_marginBottom="10dp" />
-
-                        <TextView
-                            android:text="Emergency"
-                            android:textSize="11sp"
-                            android:textStyle="bold"
-                            android:textColor="#F0F4FF"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <!-- Police -->
-                    <LinearLayout
-                        android:id="@+id/policeBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="5dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="14dp"
-                        android:background="@drawable/card_police"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@android:drawable/ic_menu_compass"
-                            android:background="@drawable/icon_bg_blue"
-                            android:padding="12dp"
-                            android:tint="#2F80ED"
-                            android:layout_marginBottom="10dp" />
-
-                        <TextView
-                            android:text="Police"
-                            android:textSize="11sp"
-                            android:textStyle="bold"
-                            android:textColor="#F0F4FF"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <!-- Hospital -->
-                    <LinearLayout
-                        android:id="@+id/hospitalBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="14dp"
-                        android:background="@drawable/card_hospital"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@android:drawable/ic_menu_info_details"
-                            android:background="@drawable/icon_bg_green"
-                            android:padding="12dp"
-                            android:tint="#00D68F"
-                            android:layout_marginBottom="10dp" />
-
-                        <TextView
-                            android:text="Hospital"
-                            android:textSize="11sp"
-                            android:textStyle="bold"
-                            android:textColor="#F0F4FF"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <!-- Row 2: Petrol | Location (centred) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
-
-                    <!-- Petrol -->
-                    <LinearLayout
-                        android:id="@+id/petrolBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginEnd="5dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="14dp"
-                        android:background="@drawable/card_petrol"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@android:drawable/ic_menu_directions"
-                            android:background="@drawable/icon_bg_orange"
-                            android:padding="12dp"
-                            android:tint="#FF6B35"
-                            android:layout_marginBottom="10dp" />
-
-                        <TextView
-                            android:text="Petrol"
-                            android:textSize="11sp"
-                            android:textStyle="bold"
-                            android:textColor="#F0F4FF"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <!-- Location -->
-                    <LinearLayout
-                        android:id="@+id/locationBtn"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
-                        android:padding="14dp"
-                        android:background="@drawable/card_location"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:src="@android:drawable/ic_menu_mylocation"
-                            android:background="@drawable/icon_bg_purple"
-                            android:padding="12dp"
-                            android:tint="#7C3AED"
-                            android:layout_marginBottom="10dp" />
-
-                        <TextView
-                            android:text="Location"
-                            android:textSize="11sp"
-                            android:textStyle="bold"
-                            android:textColor="#F0F4FF"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                    </LinearLayout>
-
-                    <!-- Spacer to balance 3-column row -->
                     <View
-                        android:layout_width="0dp"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:layout_marginStart="5dp" />
+                        android:layout_width="220dp"
+                        android:layout_height="220dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ring_outer"
+                        android:alpha="0.5" />
+
+                    <View
+                        android:layout_width="196dp"
+                        android:layout_height="196dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/ring_middle"
+                        android:alpha="0.4" />
+
+                    <Button
+                        android:id="@+id/sosBtn"
+                        android:text="SOS"
+                        android:textSize="40sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/sos_btn_bg"
+                        android:layout_gravity="center"
+                        android:stateListAnimator="@null"
+                        app:backgroundTint="@null"
+                        android:layout_width="165dp"
+                        android:layout_height="165dp" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/sosHint"
+                    android:text="TAP TO ACTIVATE · HOLD TO STOP"
+                    android:textSize="9sp"
+                    android:textColor="#2E3A52"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="24dp" />
+
+                <!-- ══════════════════════════════
+                     BOTTOM PANEL
+                     ══════════════════════════════ -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/panel_bottom_bg"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="32dp">
+
+                    <!-- Header row -->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp">
+
+                        <TextView
+                            android:text="EMERGENCY SERVICES"
+                            android:textSize="9sp"
+                            android:textColor="#2E3A52"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:text="5 ACTIVE"
+                            android:textSize="9sp"
+                            android:textColor="#FF2847"
+                            android:paddingStart="10dp"
+                            android:paddingEnd="10dp"
+                            android:paddingTop="3dp"
+                            android:paddingBottom="3dp"
+                            android:background="@drawable/badge_red_bg"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                    </RelativeLayout>
+
+                    <!-- Row 1: Emergency | Police | Hospital -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp">
+
+                        <LinearLayout
+                            android:id="@+id/contactBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="5dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="14dp"
+                            android:background="@drawable/card_emergency"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@android:drawable/ic_menu_call"
+                                android:background="@drawable/icon_bg_red"
+                                android:padding="12dp"
+                                android:tint="#FF2847"
+                                android:layout_marginBottom="10dp" />
+
+                            <TextView
+                                android:text="Emergency"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:textColor="#F0F4FF"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/policeBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="14dp"
+                            android:background="@drawable/card_police"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@android:drawable/ic_menu_compass"
+                                android:background="@drawable/icon_bg_blue"
+                                android:padding="12dp"
+                                android:tint="#2F80ED"
+                                android:layout_marginBottom="10dp" />
+
+                            <TextView
+                                android:text="Police"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:textColor="#F0F4FF"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/hospitalBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="14dp"
+                            android:background="@drawable/card_hospital"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@android:drawable/ic_menu_info_details"
+                                android:background="@drawable/icon_bg_green"
+                                android:padding="12dp"
+                                android:tint="#00D68F"
+                                android:layout_marginBottom="10dp" />
+
+                            <TextView
+                                android:text="Hospital"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:textColor="#F0F4FF"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Row 2: Petrol | Location -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <LinearLayout
+                            android:id="@+id/petrolBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="5dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="14dp"
+                            android:background="@drawable/card_petrol"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@android:drawable/ic_menu_directions"
+                                android:background="@drawable/icon_bg_orange"
+                                android:padding="12dp"
+                                android:tint="#FF6B35"
+                                android:layout_marginBottom="10dp" />
+
+                            <TextView
+                                android:text="Petrol"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:textColor="#F0F4FF"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/locationBtn"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="5dp"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="14dp"
+                            android:background="@drawable/card_location"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:src="@android:drawable/ic_menu_mylocation"
+                                android:background="@drawable/icon_bg_purple"
+                                android:padding="12dp"
+                                android:tint="#7C3AED"
+                                android:layout_marginBottom="10dp" />
+
+                            <TextView
+                                android:text="Location"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                android:textColor="#F0F4FF"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+
+                        <!-- Spacer -->
+                        <View
+                            android:layout_width="0dp"
+                            android:layout_height="1dp"
+                            android:layout_weight="1"
+                            android:layout_marginStart="5dp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
