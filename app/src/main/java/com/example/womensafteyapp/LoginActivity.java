@@ -128,22 +128,35 @@ public class LoginActivity extends AppCompatActivity {
 
     // ── Check if user has completed setup ──
     private void checkSetupAndNavigate(String userId) {
-        db.collection("users").document(userId).get()
-                .addOnSuccessListener(doc -> {
-                    if (doc.exists() && Boolean.TRUE.equals(doc.getBoolean("setupDone"))) {
-                        // Setup already done → go to main screen
-                        startActivity(new Intent(this, MainActivity.class));
-                    } else {
-                        // First time → go to setup screen
+        // ── Check local flag first (instant) ──
+        boolean setupDone = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                .getBoolean("setupDone", false);
+
+        if (setupDone) {
+            // ── Already set up → go directly to MainActivity (instant!) ──
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        } else {
+            // ── Not set up locally → check Firestore (first time only) ──
+            db.collection("users").document(userId).get()
+                    .addOnSuccessListener(doc -> {
+                        if (doc.exists() && Boolean.TRUE.equals(doc.getBoolean("setupDone"))) {
+                            // ── Save flag locally so next time is instant ──
+                            getSharedPreferences("app_prefs", MODE_PRIVATE)
+                                    .edit()
+                                    .putBoolean("setupDone", true)
+                                    .apply();
+                            startActivity(new Intent(this, MainActivity.class));
+                        } else {
+                            startActivity(new Intent(this, UserSetupActivity.class));
+                        }
+                        finish();
+                    })
+                    .addOnFailureListener(e -> {
                         startActivity(new Intent(this, UserSetupActivity.class));
-                    }
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    // On failure default to setup screen
-                    startActivity(new Intent(this, UserSetupActivity.class));
-                    finish();
-                });
+                        finish();
+                    });
+        }
     }
 
     // ── Authenticate with Firebase using Google token ──

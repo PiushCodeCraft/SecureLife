@@ -80,6 +80,19 @@ public class UserSetupActivity extends AppCompatActivity {
             db.collection("users").document(userId)
                     .set(userData)
                     .addOnSuccessListener(unused -> {
+                        // ── Save setupDone locally for instant login next time ──
+                        getSharedPreferences("app_prefs", MODE_PRIVATE)
+                                .edit()
+                                .putBoolean("setupDone", true)
+                                .apply();
+
+                        // ── Also save contacts locally for PowerButtonReceiver ──
+                        getSharedPreferences("sos_prefs", MODE_PRIVATE)
+                                .edit()
+                                .putString("contact1Number", c1Num)
+                                .putString("contact2Number", c2Num)
+                                .apply();
+
                         // ── Go to permissions screen ──
                         startActivity(new Intent(UserSetupActivity.this, PermissionsActivity.class));
                         finish();

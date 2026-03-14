@@ -39,7 +39,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
     implementation("com.google.firebase:firebase-auth:22.3.0")
-
+    implementation("com.google.firebase:firebase-messaging:23.4.0")
     // ✅ Firestore — for saving user profile & emergency contacts
     implementation("com.google.firebase:firebase-firestore:24.11.0")
 
