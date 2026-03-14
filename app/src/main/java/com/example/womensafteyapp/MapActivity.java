@@ -31,15 +31,24 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         mMap = googleMap;
 
-        if(ActivityCompat.checkSelfPermission(this,
+        if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED){
+                != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
         mMap.setMyLocationEnabled(true);
+
+        // ── Zoom to current location ──
+        mMap.setOnMyLocationChangeListener(location -> {
+            LatLng userLocation = new LatLng(
+                    location.getLatitude(),
+                    location.getLongitude()
+            );
+            mMap.animateCamera(CameraUpdateFactory
+                    .newLatLngZoom(userLocation, 15f));
+        });
     }
 }

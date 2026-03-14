@@ -40,9 +40,15 @@ dependencies {
 
     implementation("com.google.firebase:firebase-auth:22.3.0")
 
+    // ✅ Firestore — for saving user profile & emergency contacts
+    implementation("com.google.firebase:firebase-firestore:24.11.0")
+
     // Google Login
     implementation("com.google.android.gms:play-services-auth:20.7.0")
 
     // Phone OTP Login
     implementation("com.google.android.gms:play-services-auth-api-phone:18.0.1")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }

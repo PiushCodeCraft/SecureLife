@@ -1,32 +1,153 @@
-    android:orientation="vertical"
-    android:gravity="center"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#06080F"
+    android:fillViewport="true"
+    android:overScrollMode="never">
 
-
-    <EditText
-        android:id="@+id/email"
-        android:hint="Email"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="28dp"
+        android:gravity="center_horizontal">
 
-    <EditText
-        android:id="@+id/password"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
+        <!-- ── LOGO / ICON ── -->
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:src="@drawable/ic_securelife_logo"
+            android:layout_marginTop="56dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="App Logo" />
 
-    <Button
-        android:id="@+id/loginBtn"
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-    <Button
-        android:id="@+id/googleBtn"
-        android:layout_width="match_parent"
+        <!-- ── APP NAME ── -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Women Safety"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#F0F4FF"
+            android:layout_marginBottom="6dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign in to stay protected"
+            android:textSize="13sp"
+            android:textColor="#2E3A52"
+            android:layout_marginBottom="48dp" />
 
-    <TextView
-        android:id="@+id/signupText"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <!-- ── EMAIL FIELD ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/input_field_bg"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_marginBottom="14dp">
 
-</LinearLayout>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_dialog_email"
+                android:tint="#2E3A52"
+                android:layout_marginEnd="10dp" />
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Email address"
+                android:textColorHint="#2E3A52"
+                android:textColor="#F0F4FF"
+                android:textSize="14sp"
+                android:background="@android:color/transparent"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:imeOptions="actionNext" />
+
+        </LinearLayout>
+
+        <!-- ── PASSWORD FIELD ── -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/input_field_bg"
+            android:paddingStart="14dp"
+            android:paddingEnd="14dp"
+            android:layout_marginBottom="28dp">
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:src="@android:drawable/ic_lock_idle_lock"
+                android:tint="#2E3A52"
+                android:layout_marginEnd="10dp" />
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Password"
+                android:textColorHint="#2E3A52"
+                android:textColor="#F0F4FF"
+                android:textSize="14sp"
+                android:background="@android:color/transparent"
+                android:inputType="textPassword"
+                android:singleLine="true"
+                android:imeOptions="actionDone" />
+
+        </LinearLayout>
+
+        <!-- ── LOGIN BUTTON ── -->
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="Log In"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/btn_save_bg"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="14dp" />
+
+        <!-- ── GOOGLE BUTTON ── -->
+        <Button
+            android:id="@+id/googleBtn"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:text="Login with Google"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#F0F4FF"
+            android:background="@drawable/btn_logout_bg"
+            android:stateListAnimator="@null"
+            android:layout_marginBottom="32dp" />
+
+        <!-- ── SIGN UP LINK ── -->
+        <TextView
+            android:id="@+id/signupText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create Account"
+            android:textSize="14sp"
+            android:textColor="#FF2847"
+            android:textStyle="bold"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="32dp" />
+
+    </LinearLayout>
+
+</ScrollView>

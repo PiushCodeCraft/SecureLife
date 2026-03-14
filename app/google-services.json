@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "506422178648",
-    "project_id": "womensafteyapp-4be54",
-    "storage_bucket": "womensafteyapp-4be54.firebasestorage.app"
+    "project_number": "604948027289",
+    "project_id": "women-safety-app-c641f",
+    "storage_bucket": "women-safety-app-c641f.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:506422178648:android:b27fec15eb4aff5ed62b2d",
+        "mobilesdk_app_id": "1:604948027289:android:86e41632e825d4c57f6508",
         "android_client_info": {
           "package_name": "com.example.womensafteyapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "604948027289-88so52kvca60qaa15hk24cihehtfvtjp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.womensafteyapp",
+            "certificate_hash": "dd51f99a3fedb8424c0b4d69be3744c2a6f8811d"
+          }
+        },
+        {
+          "client_id": "604948027289-h16ut4af2uo8p1aklg34ebe3v495rs4u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDKP3FrqUJNaE4NTP_aDhAmcQNURDDZfEU"
+          "current_key": "AIzaSyCH_4OmIAQ-4ccrRzeX3lLkuudas4LFvJw"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "604948027289-h16ut4af2uo8p1aklg34ebe3v495rs4u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

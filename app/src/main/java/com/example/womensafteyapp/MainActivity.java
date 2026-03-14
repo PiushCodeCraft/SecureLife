@@ -22,19 +22,26 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
     // ── UI ──
     Button sosBtn;
-    LinearLayout locationBtn, policeBtn, contactBtn, hospitalBtn, petrolBtn;
+    LinearLayout locationBtn, policeBtn, contactBtn, hospitalBtn, petrolBtn, profileBtn;
     TextView sosHint, btnLogout, userName;
 
     // ── Media & Location ──
     MediaPlayer alarmSound;
     FusedLocationProviderClient fusedLocationClient;
 
-    String emergencyNumber = "9876543210";
+    // ── Firebase ──
+    FirebaseFirestore db;
+    String userId;
+
+    // ── Emergency contacts ──
+    String contact1Number = "";
+    String contact2Number = "";
 
     // ── SOS hold handler ──
     Handler holdHandler = new Handler();
@@ -51,30 +58,65 @@ public class MainActivity extends AppCompatActivity {
         contactBtn  = findViewById(R.id.contactBtn);
         hospitalBtn = findViewById(R.id.hospitalBtn);
         petrolBtn   = findViewById(R.id.petrolBtn);
+        profileBtn  = findViewById(R.id.profileBtn);
         sosHint     = findViewById(R.id.sosHint);
         btnLogout   = findViewById(R.id.btnLogout);
         userName    = findViewById(R.id.userName);
 
-        // ── Show logged-in user name from Firebase ──
+        // ── Firebase setup ──
+        db = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         if (currentUser != null) {
-            String email = currentUser.getEmail();
-            if (email != null) {
-                String namePart = email.split("@")[0];
-                String displayName = namePart.substring(0, 1).toUpperCase()
-                        + namePart.substring(1);
-                userName.setText("Welcome, " + displayName);
-            }
+            userId = currentUser.getUid();
+            db.collection("users").document(userId).get()
+                    .addOnSuccessListener(doc -> {
+                        if (doc.exists()) {
+                            String name = doc.getString("name");
+                            if (name != null && !name.isEmpty()) {
+                                userName.setText("Welcome, " + name);
+                            } else {
+                                String email = currentUser.getEmail();
+                                if (email != null) {
+                                    String namePart = email.split("@")[0];
+                                    String displayName = namePart.substring(0, 1).toUpperCase()
+                                            + namePart.substring(1);
+                                    userName.setText("Welcome, " + displayName);
+                                }
+                            }
+                            String c1 = doc.getString("contact1Number");
+                            String c2 = doc.getString("contact2Number");
+                            if (c1 != null) contact1Number = c1;
+                            if (c2 != null) contact2Number = c2;
+
+                            // ── Save contacts for PowerButtonReceiver ──
+                            getSharedPreferences("sos_prefs", MODE_PRIVATE).edit()
+                                    .putString("contact1Number", contact1Number)
+                                    .putString("contact2Number", contact2Number)
+                                    .apply();
+                        }
+                    })
+                    .addOnFailureListener(e ->
+                            Toast.makeText(this, "Failed to load profile", Toast.LENGTH_SHORT).show()
+                    );
         }
 
         // ── Location provider ──
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
+        // ── Save last location for PowerButtonReceiver ──
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                getSharedPreferences("sos_prefs", MODE_PRIVATE).edit()
+                        .putString("lastLat", String.valueOf(location.getLatitude()))
+                        .putString("lastLng", String.valueOf(location.getLongitude()))
+                        .apply();
+            }
+        });
+
         // ── Alarm sound ──
         alarmSound = MediaPlayer.create(this, R.raw.panic_alarm);
-        if (alarmSound != null) {
-            alarmSound.setLooping(true);
-        }
+        if (alarmSound != null) alarmSound.setLooping(true);
 
         // ── Permissions ──
         ActivityCompat.requestPermissions(this,
@@ -90,16 +132,11 @@ public class MainActivity extends AppCompatActivity {
         // ── SOS — tap to activate, hold 3 sec to stop ──
         sosBtn.setOnTouchListener((v, event) -> {
             switch (event.getAction()) {
-
                 case MotionEvent.ACTION_DOWN:
-                    if (alarmSound != null) {
-                        alarmSound.seekTo(0);
-                        alarmSound.start();
-                    }
+                    if (alarmSound != null) { alarmSound.seekTo(0); alarmSound.start(); }
                     sendSOS();
                     sosHint.setText("HOLD 3 SEC TO STOP ALARM");
                     sosHint.setTextColor(0xFFFF2847);
-
                     holdHandler.postDelayed(() -> {
                         if (alarmSound != null && alarmSound.isPlaying()) {
                             alarmSound.pause();
@@ -110,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, "Alarm stopped", Toast.LENGTH_SHORT).show();
                     }, 3000);
                     break;
-
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     holdHandler.removeCallbacksAndMessages(null);
@@ -121,17 +157,16 @@ public class MainActivity extends AppCompatActivity {
 
         // ── Share Location → MapActivity ──
         locationBtn.setOnClickListener(v ->
-                startActivity(new Intent(MainActivity.this, MapActivity.class))
-        );
+                startActivity(new Intent(MainActivity.this, MapActivity.class)));
 
-        // ── Police Call → 100 ──
+        // ── Police → 100 ──
         policeBtn.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:100"));
             startActivity(i);
         });
 
-        // ── Emergency Contact → 112 ──
+        // ── Emergency → 112 ──
         contactBtn.setOnClickListener(v -> {
             Intent i = new Intent(Intent.ACTION_DIAL);
             i.setData(Uri.parse("tel:112"));
@@ -145,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(i);
         });
 
-        // ── Petrol → panic alarm toggle ──
+        // ── Petrol → alarm toggle ──
         petrolBtn.setOnClickListener(v -> {
             if (alarmSound != null) {
                 if (alarmSound.isPlaying()) {
@@ -159,7 +194,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // ── Logout → sign out + go to LoginActivity ──
+        // ── Profile → UserSetupActivity ──
+        profileBtn.setOnClickListener(v ->
+                startActivity(new Intent(MainActivity.this, UserSetupActivity.class)));
+
+        // ── Logout ──
         btnLogout.setOnClickListener(v -> {
             if (alarmSound != null && alarmSound.isPlaying()) {
                 alarmSound.pause();
@@ -173,20 +212,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    // ── Send SOS SMS with live location ──
-    private void sendSOS() {
+    // ── Send SOS SMS ──
+    void sendSOS() {
         fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
             if (location != null) {
-                String message =
-                        "🚨 SOS! I need help.\nMy Location:\nhttps://maps.google.com/?q="
-                                + location.getLatitude()
-                                + "," + location.getLongitude();
+                getSharedPreferences("sos_prefs", MODE_PRIVATE).edit()
+                        .putString("lastLat", String.valueOf(location.getLatitude()))
+                        .putString("lastLng", String.valueOf(location.getLongitude()))
+                        .apply();
+
+                String message = "🚨 SOS! I need help.\nMy Location:\nhttps://maps.google.com/?q="
+                        + location.getLatitude() + "," + location.getLongitude();
                 try {
                     SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(emergencyNumber, null, message, null, null);
-                    Toast.makeText(this, "SOS Sent!", Toast.LENGTH_LONG).show();
+                    if (!contact1Number.isEmpty())
+                        smsManager.sendTextMessage(contact1Number, null, message, null, null);
+                    if (!contact2Number.isEmpty())
+                        smsManager.sendTextMessage(contact2Number, null, message, null, null);
+                    if (!contact1Number.isEmpty() || !contact2Number.isEmpty())
+                        Toast.makeText(this, "SOS Sent!", Toast.LENGTH_LONG).show();
+                    else
+                        Toast.makeText(this, "No emergency contacts set!", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
-                    Toast.makeText(this, "SMS Failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "SMS Failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             } else {
                 Toast.makeText(this, "Location not available", Toast.LENGTH_SHORT).show();
@@ -198,9 +246,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         holdHandler.removeCallbacksAndMessages(null);
-        if (alarmSound != null) {
-            alarmSound.release();
-            alarmSound = null;
-        }
+        if (alarmSound != null) { alarmSound.release(); alarmSound = null; }
     }
 }
